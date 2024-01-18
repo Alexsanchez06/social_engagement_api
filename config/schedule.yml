@@ -1,0 +1,27 @@
+realtime_jobs_6:
+  cron: "0 6 0 0"
+  class: "TwitterSyncJob"
+  queue: "twitter_jobs"
+  args:
+    - :eod: false
+
+realtime_jobs_12:
+  cron: "0 12 0 0"
+  class: "TwitterSyncJob"
+  queue: "twitter_jobs"
+  args:
+    - :eod: false
+
+realtime_jobs_18:
+  cron: "0 18 0 0"
+  class: "TwitterSyncJob"
+  queue: "twitter_jobs"
+  args:
+    - :eod: false
+
+eod_jobs:
+  cron: "0 1 0 0"
+  class: "TwitterSyncJob"
+  queue: "twitter_jobs"
+  args:
+    - :eod: true
