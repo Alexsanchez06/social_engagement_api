@@ -84,7 +84,7 @@ module Social
 
         return tweets['data'] || []
       else
-        raise "Error: #{response.inspect} #{response.code} #{response.message}"
+        raise "Error: #{response.inspect} #{response.code} #{response.body}"
       end
     end
 
