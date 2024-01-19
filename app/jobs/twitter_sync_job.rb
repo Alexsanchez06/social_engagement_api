@@ -14,9 +14,10 @@ class TwitterSyncJob < ApplicationJob
       Reward.includes(:user).where(social_type: Social::Twitter::SOCIAL_TYPE, epoch_id: epoch.id).where('created_at < ?', today).each.with_index do |reward, i|
       #Reward.includes(:user).where(social_type: Social::Twitter::SOCIAL_TYPE, epoch_id: epoch.id).each.with_index do |reward, i|
         reward_eod = reward.eod || {}
-        #if reward_eod[yesterday] == 'success'
-        #  continue
-        #end
+        if reward_eod[yesterday] == 'success'
+         puts "##{i+1} Skipping already processed. #{api.username}"
+         continue
+        end
         api = Social::Twitter.new('')
         api.reset!
         api.username = reward.user.username
