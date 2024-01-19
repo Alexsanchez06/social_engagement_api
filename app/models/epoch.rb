@@ -24,11 +24,10 @@ class Epoch < ApplicationRecord
   end
 
   def self.create_epoch(params)
-    epoch_name = "OZONE AIRDROP EVENT"
+    epoch_name = "AIRDROP EVENT"
 
     start_date = Time.parse(params[:start_date])
     end_date = Time.parse(params[:end_date])
-
     if start_date.to_time >= end_date
       raise 'Start Date should be lesser than End Date'
     end

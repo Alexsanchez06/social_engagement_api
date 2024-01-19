@@ -1,7 +1,7 @@
 namespace :airdrop do
 
   task :create => :environment do
-    NAME = "OZONE AIRDROP EVENT"
+    NAME = "AIRDROP EVENT"
     START_DATE = '16-12-2023 15:20:00'
     END_DATE = '16-12-2023 15:40:00'
     DAYS = 6
