@@ -9,7 +9,7 @@ class TwitterSyncJob < ApplicationJob
     eod = args.first.with_indifferent_access["eod"]
     epoch = Epoch.unscoped.last
     if epoch
-      today = Time.now.utc.to_date
+      today = eod ? Time.now.utc.to_date : Time.now.utc
       yesterday = (Time.now - 1.day).utc.to_date
       Reward.includes(:user).where(social_type: Social::Twitter::SOCIAL_TYPE, epoch_id: epoch.id).where('created_at < ?', today).each.with_index do |reward, i|
       #Reward.includes(:user).where(social_type: Social::Twitter::SOCIAL_TYPE, epoch_id: epoch.id).each.with_index do |reward, i|
