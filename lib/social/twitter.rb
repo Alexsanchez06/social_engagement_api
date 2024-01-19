@@ -32,7 +32,7 @@ module Social
     TWEET_SEARCH = URI('https://api.twitter.com/2/tweets/search/recent')
 
     DEFAULT_QUERY_PARAMS = {
-      max_results: 20,
+      max_results: Rails.application.credentials.tweets_count_per_user,
       expansions: 'attachments.media_keys,author_id',
       'tweet.fields': 'public_metrics,referenced_tweets',
       'media.fields': 'public_metrics',
@@ -53,7 +53,6 @@ module Social
       base_url = URI('https://api.twitter.com/2/tweets/search/recent')
       
       unless eod
-
         DEFAULT_QUERY_PARAMS.merge!({
           start_time: Time.now.utc.to_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
           end_time: (Time.now.utc - 60).strftime("%Y-%m-%dT%H:%M:%SZ") #Subtract 60 seconds (1 minute)
