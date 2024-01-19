@@ -55,7 +55,7 @@ module Social
       unless eod
         DEFAULT_QUERY_PARAMS.merge!({
           start_time: Time.now.utc.to_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
-          end_time: (Time.now.utc - 60).strftime("%Y-%m-%dT%H:%M:%SZ") #Subtract 60 seconds (1 minute)
+          end_time: (Time.now.utc - 60.seconds).strftime("%Y-%m-%dT%H:%M:%SZ") #Subtract 60 seconds (1 minute)
           #end_time: Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")
           #end_time: "#{Date.today.to_time(:utc).strftime("%Y-%m-%d")}T15:22:59Z"
         })
