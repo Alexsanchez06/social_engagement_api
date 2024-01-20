@@ -15,7 +15,7 @@ module Social
 
     POINTS = {
       retweet_count: 300,
-      reply_count: 200
+      reply_count: 200,
       like_count: 100,
       quote_count: 500,
       impression_count: 10
