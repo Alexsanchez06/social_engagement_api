@@ -14,16 +14,16 @@ module Social
     }
 
     POINTS = {
-      retweet_count: 1000,
-      reply_count: 250,
+      retweet_count: 300,
+      reply_count: 200
       like_count: 100,
       quote_count: 500,
-      impression_count: 1
+      impression_count: 10
     }      
 
     POINT_MULTIPLIER = {
       tweet: 30,
-      retweeted: 15,
+      retweeted: 1,
       quoted: 10,
       replied_to: 1,
       kickback: 0.1
