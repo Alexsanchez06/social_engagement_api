@@ -72,7 +72,14 @@ class ApplicationController < ActionController::API
 
   def update_app_config
     data = AppConfig.update_configuration(params)
+    restart_pm2_services
     respond_with data
+  end
+
+  def restart_pm2_services
+    result = `pm2 restart all`
+    #sidekiq_result = `pm2 restart Sidekiq`
+    puts "PM2 Restart Result: #{result}"
   end
 
   def create_airdrop
