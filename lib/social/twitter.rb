@@ -30,18 +30,6 @@ module Social
     }
 
     TWEET_SEARCH = URI('https://api.twitter.com/2/tweets/search/recent')
-
-    DEFAULT_QUERY_PARAMS = {
-      max_results: Rails.application.credentials.tweets_count_per_user,
-      expansions: 'attachments.media_keys,author_id',
-      'tweet.fields': 'public_metrics,referenced_tweets',
-      'media.fields': 'public_metrics',
-      #start_time: "#{Epoch.unscoped.last&.start_time&.strftime("%Y-%m-%d")}T00:00:00Z"
-      start_time: "#{Date.yesterday.to_time(:utc).strftime("%Y-%m-%d")}T00:00:00Z",
-      end_time: "#{Date.yesterday.to_time(:utc).strftime("%Y-%m-%d")}T23:59:59Z"
-      #start_time: "#{Date.today.to_time(:utc).strftime("%Y-%m-%d")}T15:20:00Z",
-      #end_time: "#{Date.today.to_time(:utc).strftime("%Y-%m-%d")}T15:35:59Z"
-    }
     
     attr_accessor :username, :tweets
 
@@ -51,18 +39,25 @@ module Social
     
     def tweets(eod)
       base_url = URI('https://api.twitter.com/2/tweets/search/recent')
+
+      default_query_params = {
+        max_results: Rails.application.credentials.tweets_count_per_user,
+        expansions: 'attachments.media_keys,author_id',
+        'tweet.fields': 'public_metrics,referenced_tweets',
+        'media.fields': 'public_metrics',
+        start_time: "#{Date.yesterday.to_time(:utc).strftime("%Y-%m-%d")}T00:00:00Z",
+        end_time: "#{Date.yesterday.to_time(:utc).strftime("%Y-%m-%d")}T23:59:59Z"
+      }
       
       unless eod
-        DEFAULT_QUERY_PARAMS.merge!({
+        default_query_params.merge!({
           start_time: Time.now.utc.to_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
           end_time: (Time.now.utc - 60.seconds).strftime("%Y-%m-%dT%H:%M:%SZ") #Subtract 60 seconds (1 minute)
-          #end_time: Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")
-          #end_time: "#{Date.today.to_time(:utc).strftime("%Y-%m-%d")}T15:22:59Z"
         })
       end
 
       query_params = { query: TAGS.map{|tag| "from:#{username} #{tag}" }.join(' OR ') }
-      base_url.query = URI.encode_www_form(DEFAULT_QUERY_PARAMS.merge(query_params))
+      base_url.query = URI.encode_www_form(default_query_params.merge(query_params))
       request = Net::HTTP::Get.new(base_url)
       request['Authorization'] = "Bearer #{AUTH_TOKEN}"
 
