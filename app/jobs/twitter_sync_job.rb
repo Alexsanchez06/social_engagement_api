@@ -10,13 +10,13 @@ class TwitterSyncJob < ApplicationJob
     epoch = Epoch.unscoped.last
     if epoch
       today = eod ? Time.now.utc.to_date : Time.now.utc
-      yesterday = (Time.now - 1.day).utc.to_date
+      yesterday = (Time.now - 1.day).utc.to_date.strftime("%Y-%m-%d")
       Reward.includes(:user).where(social_type: Social::Twitter::SOCIAL_TYPE, epoch_id: epoch.id).where('created_at < ?', today).each.with_index do |reward, i|
       #Reward.includes(:user).where(social_type: Social::Twitter::SOCIAL_TYPE, epoch_id: epoch.id).each.with_index do |reward, i|
         reward_eod = reward.eod || {}
-        if reward_eod[yesterday] == 'success'
-         puts "##{i+1} Skipping already processed. #{api.username}"
-         continue
+        if eod && reward_eod[yesterday] == 'success'
+         puts "##{i+1} Skipping already processed. #{reward.user.username}"
+         next
         end
         api = Social::Twitter.new('')
         api.reset!
