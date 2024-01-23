@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   end
 
   def sync
-    TwitterSyncJob.perform_now
+    TwitterSyncJob.perform_now(eod: false)
     render json: {success: true, message: 'Completed!'}
   end
 
