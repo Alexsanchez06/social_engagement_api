@@ -57,6 +57,8 @@ class TwitterSyncJob < ApplicationJob
           sleep 15.minutes
         end
       end
+
+      epoch.aggregate_points
     end
   end
 end
