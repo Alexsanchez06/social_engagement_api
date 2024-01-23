@@ -1,6 +1,6 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :developer if Rails.env.development?
-  if ActiveRecord::Base.connection.table_exists? AppConfig.table_name && AppConfig.first.present?
+  if ActiveRecord::Base.connection.table_exists?(AppConfig.table_name) && AppConfig.first.present?
    twitter_credentials = AppConfig.first
    provider :twitter, twitter_credentials.twitter_api_key, twitter_credentials.twitter_api_secret
   else
