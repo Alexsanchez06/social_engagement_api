@@ -10,7 +10,8 @@ module Social
       tweet: 3000,
       quoted: 2000,
       replied_to: 1000,
-      kickback: 200
+      kickback: 0,
+      retweeted: 0,
     }
 
     POINTS = {
@@ -23,9 +24,9 @@ module Social
 
     POINT_MULTIPLIER = {
       tweet: 30,
-      retweeted: 1,
       quoted: 10,
       replied_to: 1,
+      retweeted: 0.1,
       kickback: 0.1
     }
 
