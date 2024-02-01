@@ -46,8 +46,7 @@ module Social
         'tweet.fields': 'public_metrics,referenced_tweets',
         'media.fields': 'public_metrics',
         start_time: "#{Date.yesterday.to_time(:utc).strftime("%Y-%m-%d")}T00:00:00Z",
-        end_time: "#{Date.yesterday.to_time(:utc).strftime("%Y-%m-%d")}T23:59:59Z",
-        sort_order: 'relevancy'
+        end_time: "#{Date.yesterday.to_time(:utc).strftime("%Y-%m-%d")}T23:59:59Z"
       }
       
       unless eod
