@@ -11,7 +11,7 @@ module Social
       quoted: 2000,
       replied_to: 1000,
       kickback: 0,
-      retweeted: 0,
+      retweeted: 0
     }
 
     POINTS = {
