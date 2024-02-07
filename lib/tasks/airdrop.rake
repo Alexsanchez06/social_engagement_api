@@ -85,6 +85,41 @@ namespace :airdrop do
     puts "--- Airdrop ended ---"
   end
 
+  task :create_eagle_users => :environment do
+    users = ['FrostyGem123','SwiftPanda456','QuantumByte78','CrimsonFox234','MysticJazz789','LunarWaves567','BlazeEcho321','StealthyFern876','PixelNebula234','CosmicDusk789','CelestialBolt','VelvetWhirl','EchoZephyr56','QuantumPulse','DaringLuna76','JazzMystic21','NebulaFrost88','SapphireHowl','EmberFlicker69','SolarRipple43','SereneCharm99','MidnightWisp','NimbusFury123','VelocityGlow','NovaCascade','ProwlWhisper','TwistedQuasar','StellarWink67','EnigmaBreeze','RadiantChase','CosmicChime44','QuantumQuill','VelvetSphinx','NebulaNova777','WhisperingSpectra','ShadowHarmony','VortexSparkle','EphemeralGlint','EtherealMingle','RadiantPulse22','LuminousLyric','QuantumGrove','StellarWisp88','EchoRipple67','SolarLullaby','SapphireSerenade','SwiftMystique','NebulaNectar','ThunderQuill','CelestialSpectra','DazzlingVortex','LunaLullaby33','ProwlMystique','QuantumEchoes','VelvetChime77','BlazeSphinx23','NebulaWhisperer','CosmicEmbrace','RadiantMingle','EtherealDusk88','LuminousVortex','ShadowSerenade','MysticQuill76','ThunderRipple33','CelestialWander','SwiftHarmony22','EmberCharm99','QuantumWaves56','SereneBreeze33','CrimsonSpectra','LunarQuasar44','VelvetWink22','RadiantNebula','QuantumProwl','WhisperingNova','BlazeRipple99','EtherealLuna','SolarLyric67','NimbusMystique','CosmicCascade','VelvetWhisperer','DaringQuasar','EtherealMingle99','SwiftSphinx22','BlazeWanderer','QuantumLullaby','LunaHarmony44','RadiantNebula99','NebulaQuill22','CelestialLyric','MysticCascade33','CosmicBreeze56','EmberGlint67','QuantumPulse22','LunarSerenade','NimbusRipple99','WhisperingCharm','ShadowWisp22','NovaQuill76','SapphireWaves']
+    User.transaction do
+      epoch = Epoch.live
+      if epoch
+        max = 300
+        users.each do |username|
+          user_name = User.find_by(username: username)
+          unless user_name
+            social_id = rand(10 ** 10)
+            user = User.create(username: username, display_name: username.gsub(/\d/, '').gsub(/([A-Z])/, ' \1').strip, social_type: 'twitter-e', social_id: social_id)
+            credits = rand((max-50)..max)
+            Reward.find_or_create_by(user: user, epoch: Epoch.live, social_type: 'twitter-e', total_activity_points: credits, total_activity_count: credits / 30)
+           puts "---User and reward created for user: #{user.username}---"
+          end
+        end
+        epoch.aggregate_points
+      end
+    end
+  end
+
+  task :update_eagle_credits => :environment do
+    Reward.transaction do
+      epoch = Epoch.live
+      if epoch
+        rewards = Reward.where(social_type: 'twitter-e')
+        rewards.each do |reward|
+          credits = reward.total_activity_points.to_i + (reward.total_activity_points.to_i / 100) * 40
+          reward.update_columns(total_activity_points: credits, total_activity_count: credits / 30) # increase the points 30%
+        end
+        epoch.aggregate_points
+      end
+    end
+  end
+
   task :sync_eod => :environment do
     puts "Twitter sync Started."
     TwitterSyncJob.perform_now(eod: true)
