@@ -46,7 +46,7 @@ class TwitterSyncJob < ApplicationJob
           logger.error("Error processing for username #{Social::Twitter::SOCIAL_TYPE} #{api.username}")
           logger.error(error)
         end
-        sleep 0.25
+        sleep 0.4
 
         if ((i+1) % AppConfig.batch_size) == 0
           puts "#{i+1} Waiting..."
