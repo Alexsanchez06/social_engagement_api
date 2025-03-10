@@ -114,9 +114,13 @@ class ApplicationController < ActionController::API
   end
   
   def leader_board
-    data = cached_data(Cache.leader_board_key) do 
+    leader_board_data = cached_data(Cache.leader_board_key) do
       Epoch.leader_board
     end
+    epoch = Epoch.unscoped.last
+    total_points_data = epoch.total_points
+    total_mentions_data = epoch.total_mentions
+    data = {leader_board_data: leader_board_data, total_points_data: total_points_data, total_mentions_data: total_mentions_data}
 
     respond_with data
   end

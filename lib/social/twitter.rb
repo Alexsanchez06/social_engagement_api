@@ -84,6 +84,20 @@ module Social
       end
     end
 
+    def self.follow
+      auth_token= 'AAAAAAAAAAAAAAAAAAAAAAVDrAEAAAAAf3zlUqpmHCI1ipXHYYv%2FdLEf05I%3DHbZbmqETY1OnsDCP72cNX31sJuJlkEF3vvfhq1puqoxxFRFOfV'
+      user_id = 'BabuVdineshbabu'
+      base_url = URI("https://api.twitter.com/2/users/#{user_id}/following")
+      request = Net::HTTP::Get.new(base_url)
+      request['Authorization'] = "Bearer #{auth_token}"
+      response = Net::HTTP.start(base_url.hostname, base_url.port, use_ssl: true) { |http| http.request(request) }
+      if response.code == '200'
+        tweets = JSON.parse(response.body) || {}
+      else
+        raise "Error: #{response.inspect} #{response.code} #{response.body}"
+      end
+    end
+
     def reset!
       username = nil
       tweets = nil
